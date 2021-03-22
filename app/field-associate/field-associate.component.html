@@ -1,0 +1,150 @@
+<div class="container col-1">
+    <div class="row">
+        <div class="col-md-4 mt-2">
+            <i class="fas fa-hand-point-right fa-2x"></i>
+        </div>
+        <div class="col-md-1 mt-2">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#entryform">Entry_Form</button>
+        </div>
+    </div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="entryform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="entryform">Entry Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form [formGroup]="myform">
+            <div class="modal-body">
+                <p class="text-center text-info">{{msg}}</p>
+              <div class="row">
+                  <div class="col-md-6">
+                      <label>Name *</label>
+                      <input type="text" class="form-control" placeholder="Enter Name"formControlName="name" [(ngModel)]="name">
+                      <div *ngIf="pagesubmit && myform.controls.name.errors">
+                        <p *ngIf="myform.controls.name.errors.required">
+                            <i class="text-danger">Please enter name !</i>
+                        </p>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label>Mobile*</label>
+                    <input type="number" class="form-control" placeholder="Enter Mobile No" formControlName="mobile"  [(ngModel)]="mobile">
+                    <div *ngIf="pagesubmit && myform.controls.mobile.errors">
+                        <p *ngIf="myform.controls.mobile.errors.required">
+                            <i class="text-danger">Please enter Mobile no !</i>
+                        </p>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-12">
+                      <label>Email*</label>
+                      <input type="email" class="form-control" placeholder="Enter email" formControlName="email" [(ngModel)]="email">
+                      <div *ngIf="pagesubmit && myform.controls.email.errors">
+                        <p *ngIf="myform.controls.email.errors.required">
+                            <i class="text-danger">Please enter email !</i>
+                        </p>
+                      </div>
+                  </div>
+    
+                  <div class="col-md-6 form-group">
+                    <label for="cost">Cost Center</label>
+                    <select id="cost" name="cost" class="form-control" formControlName="city" [(ngModel)]="city">
+                        <option *ngFor="let city of cityList">{{city.name}}</option>
+                    </select>
+                  </div>
+          
+                    <div class="col-md-6 form-group">
+                        <label for="location">Location</label>
+                        <select id="location" name="location" class="form-control" formControlName="loc" [(ngModel)]="loc">
+                            <option *ngFor="let loc of locations">{{loc.location}}</option>
+                        </select>
+                    </div>
+                  
+                    <div class="button">
+                        <button class="btn btn-info" data-dismiss="modal">Cancle</button>
+                        &nbsp;
+                        <button class="btn btn-success" (click)="save()">Save</button>
+                    </div>  
+                   
+              </div><!--min row close-->
+            </div><!--model body close-->
+        </form>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div><!--Model close-->
+</div><!--main-container close-->
+  <br>
+<!--Table start-->
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h5>Operator Wise Pending Jobs</h5>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <span class="text-danger">Show</span>
+                            <select>
+                                <option value="0">10</option>
+                                <option value="1">25</option>
+                                <option value="2">50</option>
+                                <option value="3">100</option>
+                            </select>
+                            <span class="text-danger">entries</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="keyword">
+                    </div>
+                </div><br>
+                <p class="text-center text-info">{{msg}}</p>
+                <table class="table  table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Work Location</th>
+                            <th>Cost Center</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of  getTableItem | filter:keyword | paginate: { itemsPerPage: 10, currentPage: p }">
+                            <td>{{data.id}}</td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.mobile}}</td>
+                            <td>{{data.email}}</td>
+                            <td>{{data.city}}</td>
+                            <td>{{data.loc}}</td>
+                            <td><button>Edit</button></td>
+                            <td><button (click)="deleteTableData(data.id)">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><!--card-body close-->
+            <div class="card-footer"></div>
+        </div><!--card close-->
+        <div class="row"><!--for pagination-->
+            <br>
+            <div class="col-md-12 text-center">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+        </div><!--row close-->
+</div><!--col-md-10 close-->
+    
